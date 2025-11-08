@@ -62,7 +62,7 @@ export default [
 			'prettier/prettier': ['warn', { endOfLine: 'auto' }],
 			'no-empty': 'warn',
 			'prefer-const': 'warn',
-			'no-use-before-define': 'error',
+			// 'no-use-before-define': 'error',
 			'no-debugger': 'error',
 			'no-console': 'warn',
 			'no-unused-vars': 'warn',

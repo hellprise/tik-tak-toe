@@ -22,25 +22,25 @@ model Game {
   field   Json?
 
   winner     GamePlayer? @relation(fields: [winnerId], references: [id])
-  winnerId   String?
-  gameOverAt String?
+  winnerId   String?     @map("winner_id")
+  gameOverAt String?     @map("game_over_at")
 }
 
 model GamePlayer {
   id     String @id @default(cuid())
-  gameId String
+  gameId String @map("game_id")
   game   Game   @relation("players", fields: [gameId], references: [id])
-  userId String
+  userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id])
   index  Int
-  Game   Game[]
+  games  Game[]
 }
 
 model User {
   id           String       @id @default(cuid())
   login        String
   rating       Int
-  passwordHash String
+  passwordHash String       @map("password_hash")
   salt         String       @default("")
   players      GamePlayer[]
 }

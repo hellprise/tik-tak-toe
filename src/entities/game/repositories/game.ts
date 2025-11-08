@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { GameId } from '@/kernel/ids';
+
 import { prisma } from '@/shared/lib/db';
 
 import type { Game, GamePlayer, Prisma, User } from '@/generated/prisma';
@@ -106,6 +108,17 @@ async function saveGame(game: GameInProgressEntity | GameOverEntity | GameOverDr
 	);
 }
 
+async function getGame(where?: Prisma.GameWhereInput) {
+	const game = await prisma.game.findFirst({
+		where,
+		include: gameInclude,
+	});
+
+	if (game) return dbGameToGameEntity(game);
+
+	return undefined;
+}
+
 async function createGame(game: GameIdleEntity): Promise<GameEntity> {
 	const createdGame = await prisma.game.create({
 		data: {
@@ -125,8 +138,28 @@ async function createGame(game: GameIdleEntity): Promise<GameEntity> {
 	return dbGameToGameEntity(createdGame);
 }
 
+async function startGame(gameId: GameId, player: PlayerEntity) {
+	return dbGameToGameEntity(
+		await prisma.game.update({
+			where: { id: gameId },
+			data: {
+				players: {
+					create: {
+						userId: player.id,
+						index: 1,
+					},
+				},
+				status: 'IN_PROGRESS',
+			},
+			include: gameInclude,
+		})
+	);
+}
+
 export const gameRepository = {
 	gamesList,
 	saveGame,
 	createGame,
+	getGame,
+	startGame,
 };

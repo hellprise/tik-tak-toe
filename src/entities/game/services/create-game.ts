@@ -2,6 +2,7 @@ import cuid from 'cuid';
 
 import { left, right } from '@/shared/lib/either';
 
+import { gameEvents } from './game-events';
 import { gameRepository } from '../repositories/game';
 
 import type { PlayerEntity } from '../domain';
@@ -26,6 +27,10 @@ export async function createGame(player: PlayerEntity) {
 		creator: player,
 		status: 'IDLE',
 		field: Array(9).fill(null),
+	});
+
+	await gameEvents.emit({
+		type: 'game-created',
 	});
 
 	return right(createdGame);

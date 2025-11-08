@@ -1,5 +1,10 @@
-export default async function GamePage({ params }: { params: Promise<{ id: string }> }) {
-	const { id } = await params;
+import { Game } from '@/features/game/server';
 
-	return <div>GamePage {id}</div>;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+	const { id } = await params;
+	return (
+		<main className="mx-auto flex w-full max-w-[600px] grow flex-col pt-24">
+			<Game gameId={id} />
+		</main>
+	);
 }

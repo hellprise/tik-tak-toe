@@ -61,14 +61,16 @@ function Button({
 			className={cn(buttonVariants({ variant, size, className }))}
 			{...props}
 		>
-			{loading ? <Loader2 className="size-4 animate-spin" /> : children}
-			{result &&
-				matchEither(result, {
-					right: () => null,
-					left: (e) => (
-						<div className="text-destructive absolute top-[calc(100%_+_4px)] left-0">{e}</div>
-					),
-				})}
+			<span>
+				{loading ? <Loader2 className="size-4 animate-spin" /> : children}
+				{result &&
+					matchEither(result, {
+						right: () => null,
+						left: (e) => (
+							<div className="text-destructive absolute top-[calc(100%_+_4px)] left-0">{e}</div>
+						),
+					})}
+			</span>
 		</Comp>
 	);
 }
